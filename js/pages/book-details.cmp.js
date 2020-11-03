@@ -1,6 +1,6 @@
 import { bookService } from '../services/book-service.js'
 import reviewAdd from '../cmps/review-add.cmp.js'
-import reviewPreview from '../cmps/book-preview.cmp.js'
+import reviewPreview from '../cmps/review-preview.cmp.js'
 // import { eventBus } from '../services/event-bus-service.js'
 
 export default {
@@ -16,15 +16,16 @@ export default {
                 <p>Price:<span :class="priceClass">{{price}}</span></p>
                 <p v-show="bookIsOnSale" v-bind:book="onSale">{{onSale}}</p>
                 <review-add :bookId="book.id" v-if="addingReview" @added="addReview" @canceled="closeReview" @delete="deleteReview(id)"/>
-                <button @click="addingReview = true">Add Review</button>
+                <button @click="reviewAdder">Add Review</button>
                 <div class="reviews" v-if="book.reviews.length">
                     <li v-for="review in book.reviews" :key="review.id">
-                        <review-preview @delete="deleteReview" :review="review" />
+                    <!-- {{review}}     -->
+                    <review-preview @delete="deleteReview" :review="review" />
                     </li>
                 </div>
             </div>
         </section>
-    `,
+    `,  
     data() {
         return {
             bookIsOnSale: false,
@@ -42,18 +43,22 @@ export default {
             bookService.getById(bookId)
                 .then(book => {
                     this.book = book
+                    console.log('then statment!!!');
                     this.closeReview();
                 })
         },
         closeReview() {
             this.addingReview = false;
         },
+        reviewAdder(){
+            this.addingReview = true
+        },
         deleteReview(reviewId) {
             console.log(this.book.reviews);
             const idx = this.book.reviews.findIndex(review => review.id === reviewId)
             this.book.reviews.splice(idx, 1)
             bookService.saveBooks();
-            // eventBus.$emit('show-msg', { txt: 'Review has been deleted', type: 'Success' })
+            eventBus.$emit('show-msg', { txt: 'Review has been deleted', type: 'Success' })
         }
     },
     computed: {
@@ -112,12 +117,6 @@ export default {
 
     },
     created() {
-        // const id = this.$route.params.bookId
-        // console.log('in created',this.$route.params.bookId)
-        // bookService.getById(id)
-        //     .then(book => this.book = book)
-        //     .then(console.log(this.book,'this BOOK'))
-        //     .then(console.log(this.book.reviews,'book reviews'))
         const bookId = this.$route.params.bookId;
         bookService.getById(bookId)
             .then(book => this.book = book)

@@ -27,7 +27,7 @@ export default {
             this.$emit('filter', JSON.parse(JSON.stringify( this.filterBy)))//our way to make a deep copy
         },
         onSubmit(){
-            console.log('roy');
+            // console.log('submitting');
         }
     }
 }

@@ -1,7 +1,7 @@
 export default {
     props:['review'],
     template:`
-        <section class="review-preview">
+        <section v-if="review" class="review-preview">
             <h3>{{review.fullName}}</h3>
                 <p>Rating: {{review.rating}}</p>
                 <p>Read At: {{dateToShow}}</p>

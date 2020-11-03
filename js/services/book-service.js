@@ -5,7 +5,8 @@ export const bookService = {
   getById,
   addReview,
   getNewReview,
-  saveBooks
+  saveBooks,
+  addGoogleBook
 }
 
 var gBooks = _createBooks()
@@ -51,6 +52,26 @@ function getNewReview() {
   }
   return review
 }
+
+function addGoogleBook(googleBook){
+  return{
+    id: googleBook.id,
+    id: googleBook.id,
+
+  }
+  
+
+}
+// function getBooksAxios(){
+//   return axios.get('https://www.googleapis.com/books/v1/volumes?q=flowers&filter=paid-ebooks')
+//       .then (res=>{
+//           console.log(res.data.items/);
+//           // cb(res.data.rates)
+//           // return res.data
+//       })
+      
+// }
+
 
 
 function _createBooks() {

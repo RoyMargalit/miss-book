@@ -3,7 +3,7 @@ import bookList from '../cmps/book-list.cmp.js';
 import bookFilter from '../cmps/book-filter.cmp.js';
 import bookDetails from '../pages/book-details.cmp.js';
 // import { utilService } from '../services/util-service.js'
-import { eventBus } from '../services/event-bus-service.js'
+// import { eventBus } from '../services/event-bus-service.js'
 
 
 
