@@ -6,7 +6,10 @@ export const bookService = {
   addReview,
   getNewReview,
   saveBooks,
+  // addGoogleBook
+  getBooksFromGoogle,
   addGoogleBook
+
 }
 
 var gBooks = _createBooks()
@@ -33,7 +36,7 @@ function saveBooks() {
 function addReview(review, bookId) {
   getById(bookId)
     .then(book => {
-      if(!book.reviews) book.reviews=[]
+      if (!book.reviews) book.reviews = []
       book.reviews.push(review);
       saveBooks();
       // return Promise.resolve(book)
@@ -44,35 +47,63 @@ function addReview(review, bookId) {
 function getNewReview() {
   const today = new Date();
   const review = {
-      id: utilService.makeId(),
-      fullName: 'Book Reader',
-      rating: '1',
-      readAt: today.toISOString().substr(0, 10),
-      moreInfo: ''
+    id: utilService.makeId(),
+    fullName: 'Book Reader',
+    rating: '1',
+    readAt: today.toISOString().substr(0, 10),
+    moreInfo: ''
   }
   return review
 }
 
-function addGoogleBook(googleBook){
-  return{
-    id: googleBook.id,
-    id: googleBook.id,
 
+
+
+function getEmptyBook() {
+  return {
+    id: '',
+    title: '',
+    subtitle: '',
+    authors: [],
+    publishedDate: '',
+    description: '',
+    pageCount: '',
+    categories: '',
+    thumbnail: '',
+    listPrice: {
+      amount: utilService.getRandomIntInclusive(50, 200),
+      currencyCode: 'ILS',
+      isOnSale: false,
+
+    },
   }
-  
-
 }
-// function getBooksAxios(){
-//   return axios.get('https://www.googleapis.com/books/v1/volumes?q=flowers&filter=paid-ebooks')
-//       .then (res=>{
-//           console.log(res.data.items/);
-//           // cb(res.data.rates)
-//           // return res.data
-//       })
-      
-// }
+
+function getBooksFromGoogle(searchTerm) {
+  return axios.get(`https://www.googleapis.com/books/v1/volumes?printType=books&q=${searchTerm}`)
+      .then(books => books.data)
+  // const books = gGoogleBooks;
+  // return Promise.resolve(books)
+}
 
 
+function addGoogleBook(book) {
+  const newBook = getEmptyBook();
+  const thumbnail = (book.volumeInfo.imageLinks) ? book.volumeInfo.imageLinks.thumbnail : './img/default.png';
+  newBook.id = book.id;
+  newBook.title = book.volumeInfo.title;
+  newBook.subtitle = book.volumeInfo.subtitle;
+  newBook.authors = book.volumeInfo.authors;
+  newBook.publishedDate = book.volumeInfo.publishedDate;
+  newBook.description = book.volumeInfo.description;
+  newBook.pageCount = book.volumeInfo.pageCount;
+  newBook.categories = book.volumeInfo.categories;
+  newBook.thumbnail = thumbnail;
+  newBook.language = book.volumeInfo.language;
+  gBooks.unshift(newBook)
+  saveBooks();
+  console.log(gBooks)
+}
 
 function _createBooks() {
   var books = utilService.loadFromStorage('booksDB');

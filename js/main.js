@@ -1,6 +1,3 @@
-// console.log('hey')
-// import './pages/book-app.cmp.js';
-// import './pages/book-app.cmp.js';
 import { myRouter } from './routes.js'
 import appHeader from './cmps/app-header.cmp.js'
 // import { eventBus } from './services/event-bus-service.js'

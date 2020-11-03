@@ -9,6 +9,7 @@ export default {
             <div class="details">
                 <h1 class="priceClass">{{book.title}}</h1>
                 <img :src ="imgUrl" class="img-detail" />
+                <button v-on:click= "onBtn">Go back</button>
                 <p>Subtitle: {{book.subtitle}}</p>
                 <p>Author: {{book.authors[0]}}</p>
                 <p>Published Date: {{publishedAt}}</p>
@@ -34,8 +35,9 @@ export default {
         }
     },
     methods: {
-        emitReturn(bookId) {//use later to return
-            this.$emit('return')
+        onBtn() {
+            console.log('emit return',this.book.id);
+            this.$router.push(`/book`)
         },
         bookClicked() {
         },
@@ -43,7 +45,6 @@ export default {
             bookService.getById(bookId)
                 .then(book => {
                     this.book = book
-                    console.log('then statment!!!');
                     this.closeReview();
                 })
         },

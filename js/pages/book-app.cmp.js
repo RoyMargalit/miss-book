@@ -2,8 +2,9 @@ import { bookService } from '../services/book-service.js'
 import bookList from '../cmps/book-list.cmp.js';
 import bookFilter from '../cmps/book-filter.cmp.js';
 import bookDetails from '../pages/book-details.cmp.js';
+import bookAdd from '../cmps/book-add.cmp.js';
 // import { utilService } from '../services/util-service.js'
-// import { eventBus } from '../services/event-bus-service.js'
+import { eventBus } from '../services/event-bus-service.js'
 
 
 
@@ -11,9 +12,10 @@ export default {
     template: `
         <section class="book-app">
             <h1>Books app!</h1>
-            <book-filter v-show="!isBookSelected" @filter="setFilter"></book-filter>
-            <book-list v-show="!isBookSelected" v-bind:books="booksToShow" v-on:selected="selectBook"></book-list>
-            <book-details v-if="isBookSelected"  v-bind:book="selectedBook"></book-details>
+            <book-add />
+            <book-filter v-if="!isBookSelected" @filter="setFilter"></book-filter>
+            <book-list v-if="!isBookSelected" v-bind:books="booksToShow" v-on:selected="selectBook"></book-list>
+            <book-details  v-if="isBookSelected"  v-bind:book="selectedBook" ></book-details>
         </section>
     `,
     data() {
@@ -64,5 +66,6 @@ export default {
         bookList,
         bookFilter,
         bookDetails,
+        bookAdd
     },   
 }
